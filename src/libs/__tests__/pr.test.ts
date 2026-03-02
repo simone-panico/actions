@@ -211,14 +211,17 @@ describe('pr.ts', () => {
 
     process.env.GITHUB_REPOSITORY = 'pulumi/actions';
 
-    await handlePullRequestMessage(options, projectName, '+ created\n- deleted\n~ updated');
+    await handlePullRequestMessage(options, projectName, '    + created\n    - deleted\n    ~ updated\nno marker line');
     const call = createComment.mock.calls[0][0];
     expect(call.body).toContain('```diff');
     expect(call.body).not.toContain('<pre>');
     expect(call.body).not.toContain('</pre>');
-    expect(call.body).toContain('+ created');
-    expect(call.body).toContain('- deleted');
-    expect(call.body).toContain('~ updated');
+    // Markers should be moved to the start of the line
+    expect(call.body).toContain('+     created');
+    expect(call.body).toContain('-     deleted');
+    expect(call.body).toContain('~     updated');
+    // Lines without markers should remain unchanged
+    expect(call.body).toContain('no marker line');
   });
 
   it('should add a clickable link to the update run', async () => {

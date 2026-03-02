@@ -53,6 +53,19 @@ function extractViewLiveLink(output: string) {
   return linkLine.split('View Live: ')[1];
 }
 
+function moveDiffMarkersToLineStart(text: string): string {
+  return text
+    .split('\n')
+    .map((line) => {
+      const match = line.match(/^(\s+)([+\-~])(.*)$/);
+      if (match) {
+        return `${match[2]}${match[1]}${match[3]}`;
+      }
+      return line;
+    })
+    .join('\n');
+}
+
 export async function handlePullRequestMessage(
   config: Config,
   projectName: string,
@@ -92,7 +105,7 @@ export async function handlePullRequestMessage(
       : ''
     }
     ${colorPrComment ? '```diff' : '<pre>'}
-    ${message}
+    ${colorPrComment ? moveDiffMarkersToLineStart(message) : message}
     ${colorPrComment ? '```' : '</pre>'}
     ${trimmed && !alwaysIncludeSummary
       ? ':warning: **Warn**: The output was too long and trimmed.'
