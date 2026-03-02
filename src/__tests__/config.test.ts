@@ -13,6 +13,7 @@ const defaultConfig: Record<string, string> = {
   upsert: 'false',
   remove: 'false',
   refresh: 'false',
+  'color-pr-comment': 'false',
   'edit-pr-comment': 'false',
   'expect-no-changes': 'false',
   diff: 'false',
@@ -47,6 +48,7 @@ describe('config.ts', () => {
       Object {
         "alwaysIncludeSummary": false,
         "cloudUrl": "file://~",
+        "colorPrComment": false,
         "command": "up",
         "commentOnPr": false,
         "commentOnPrNumber": undefined,

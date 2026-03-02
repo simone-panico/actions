@@ -194,6 +194,33 @@ describe('pr.ts', () => {
     });
   });
 
+  it('should use diff code block when colorPrComment is true', async () => {
+    // @ts-ignore
+    gh.context = {
+      payload: {
+        pull_request: {
+          number: 123,
+        },
+      },
+    };
+
+    const options: Config = {
+      ...defaultOptions,
+      colorPrComment: true,
+    };
+
+    process.env.GITHUB_REPOSITORY = 'pulumi/actions';
+
+    await handlePullRequestMessage(options, projectName, '+ created\n- deleted\n~ updated');
+    const call = createComment.mock.calls[0][0];
+    expect(call.body).toContain('```diff');
+    expect(call.body).not.toContain('<pre>');
+    expect(call.body).not.toContain('</pre>');
+    expect(call.body).toContain('+ created');
+    expect(call.body).toContain('- deleted');
+    expect(call.body).toContain('~ updated');
+  });
+
   it('should add a clickable link to the update run', async () => {
     // @ts-ignore
     gh.context = {
