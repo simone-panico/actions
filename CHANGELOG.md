@@ -2,7 +2,8 @@
 
 ## HEAD (Unreleased)
 
-**(none)**
+- feat: Use diff syntax highlighting in PR comments when `color: always`
+  ([#1401](https://github.com/pulumi/actions/pull/1401))
 
 ---
 
