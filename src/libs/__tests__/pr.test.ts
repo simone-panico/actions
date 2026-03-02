@@ -216,11 +216,9 @@ describe('pr.ts', () => {
     expect(call.body).toContain('```diff');
     expect(call.body).not.toContain('<pre>');
     expect(call.body).not.toContain('</pre>');
-    // Markers should be moved to the start of the line
     expect(call.body).toContain('+     created');
     expect(call.body).toContain('-     deleted');
     expect(call.body).toContain('~     updated');
-    // Lines without markers should remain unchanged
     expect(call.body).toContain('no marker line');
   });
 
